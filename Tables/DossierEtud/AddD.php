@@ -99,10 +99,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="datetime-local" name="DatePiece">
         <br>
 
-        <label for="Session">Session:</label>
-        <input type="text" name="Session">
-        <br>
+          <label for="Session">Session:</label>
+        <select name="Session" required>
+            <?php
+            // Retrieve the session values from the "session" table
+            $sessionQuery = "SELECT Numero FROM session";
+            $sessionStmt = $pdo->query($sessionQuery);
 
+            // Display each session value as an option in the dropdown
+            while ($row = $sessionStmt->fetch(PDO::FETCH_ASSOC)) {
+                echo "<option value='" . $row['Numero'] . "'>" . $row['Numero'] . "</option>";
+            }
+            ?>
+        </select>
+        <br>
         <label for="nomfichierpiece">Nom Fichier Piece:</label>
         <input type="text" name="nomfichierpiece">
         <br>

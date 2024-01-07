@@ -80,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit DossierEtud</title>
 </head>
+<!-- edit.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit DossierEtud</title>
+</head>
 <body>
     <h2>Edit DossierEtud</h2>
 
@@ -92,7 +100,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" name="Motif" value="<?php echo $dossier['Motif']; ?>">
 
         <label for="MatEtud">MatEtud:</label>
-        <input type="text" name="MatEtud" value="<?php echo $dossier['MatEtud']; ?>" readonly>
+        <select name="MatEtud" required>
+            <?php
+            // Fetch available options for MatEtud from the "etudiant" table
+            $etudiantQuery = "SELECT NCIN FROM etudiant";
+            $etudiantStmt = $pdo->query($etudiantQuery);
+
+            // Display each option in the dropdown
+            while ($etudiantRow = $etudiantStmt->fetch(PDO::FETCH_ASSOC)) {
+                $selected = ($etudiantRow['NCIN'] == $dossier['MatEtud']) ? 'selected' : '';
+                echo "<option value='" . $etudiantRow['NCIN'] . "' $selected>" .  $etudiantRow['NCIN'] . "</option>";
+            }
+            ?>
+        </select>
 
         <label for="TypePiece">TypePiece:</label>
         <input type="text" name="TypePiece" value="<?php echo $dossier['TypePiece']; ?>">
@@ -101,7 +121,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="datetime-local" name="DatePiece" value="<?php echo date('Y-m-d\TH:i', strtotime($dossier['DatePiece'])); ?>">
 
         <label for="Session">Session:</label>
-        <input type="text" name="Session" value="<?php echo $dossier['Session']; ?>">
+        <select name="Session" required>
+            <?php
+            // Fetch available options for Session from the "session" table
+            $sessionQuery = "SELECT Numero FROM session";
+            $sessionStmt = $pdo->query($sessionQuery);
+
+            // Display each option in the dropdown
+            while ($sessionRow = $sessionStmt->fetch(PDO::FETCH_ASSOC)) {
+                $selected = ($sessionRow['Numero'] == $dossier['Session']) ? 'selected' : '';
+                echo "<option value='" . $sessionRow['Numero'] . "' $selected>" . $sessionRow['Numero'] . "</option>";
+            }
+            ?>
+        </select>
 
         <label for="nomfichierpiece">Nom Fichier Piece:</label>
         <input type="text" name="nomfichierpiece" value="<?php echo $dossier['nomfichierpiece']; ?>">
