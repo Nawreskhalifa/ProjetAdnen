@@ -1,13 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+<form method="post" action="IndexE.php">
+        <label for="searchAttribute">Rechercher par :</label>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="Nom">Nom</option>
+            <option value="Prénom">Prénom</option>
+            <option value="NCIN">NCIN</option>
+            <option value="NCE">NCE</option>
+            <option value="DateNais">DateNais</option>
+            <option value="Ville">Ville</option>
+            <option value="NomArabe">NomArabe</option>
+            <option value="Sexe">Sexe</option>
+      
+        </select>
+
+        <label for="searchTerm">Terme de recherche :</label>
+        <input type="text" name="searchTerm" id="searchTerm" required>
+        <input type="submit" value="Rechercher">
+    </form>
+</body>
+
+</html>
 
 <?php
-require('config.php'); // Include the config file to establish a MySQLi connection
+require('config.php'); 
 
-$query = "SELECT * FROM etudiant AS e JOIN classe AS c ON e.CodClasse = c.CodClasse";
-$result = $connection->query($query);
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $searchTerm = $_POST['searchTerm'];
+    $searchAttribute = $_POST['searchAttribute'];
+
+    // Construct the query based on the selected attribute
+    $query = "SELECT e.*, c.*, g.* FROM etudiant AS e 
+              JOIN classe AS c ON e.CodClasse = c.CodClasse
+              JOIN gouvernorats AS g ON e.Gouvernorat = g.Gouvernorat
+              WHERE $searchAttribute LIKE '%$searchTerm%'";}
+              else {
+                // Default query to fetch all professors
+                $query = "SELECT e.*, c.*, g.* FROM etudiant AS e 
+                JOIN classe AS c ON e.CodClasse = c.CodClasse
+                JOIN gouvernorats AS g ON e.Gouvernorat = g.Gouvernorat";
+      
+            }
+    $result = $connection->query($query);
 
 if ($result->num_rows > 0) {
     echo "<h3>Liste d'étudiants:</h3>";
-    echo "<a href='AddE.php'>Ajouter</a>";
+    echo "<a href='AddE.php' class='action-btn back_btn'>Ajouter</a>";
     echo "<table border='1'><tr>
         <th>Nom</th>
         <th>DateNais</th>
@@ -59,7 +108,7 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row["LieuNais"] . "</td>";
         echo "<td>" . $row["Adresse"] . "</td>";
         echo "<td>" . $row["Ville"] . "</td>";
-        echo "<td>" . $row["CodePostal"] . "</td>";
+        echo "<td>" . $row["codpostal"] . "</td>";
         echo "<td>" . $row["N_Tel"] . "</td>";
         echo "<td>" . $row["CodClasse"] . "</td>";
         echo "<td>" . $row["DecisionConseil"] . "</td>";
@@ -79,13 +128,13 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row["VilleArabe"] . "</td>";
         echo "<td>" . $row["GouvernoratArabe"] . "</td>";
         echo "<td>" . $row["TypeBacAB"] . "</td>";
-        echo "<td>" . $row["Photo"] . "</td>";
+        echo "<td><img src='./photos/" . $row["Photo"] . "' alt='Photo' width='200' height='180'></td>";
         echo "<td>" . $row["Origine"] . "</td>";
         echo "<td>" . $row["SituationDpart"] . "</td>";
         echo "<td>" . $row["NBAC"] . "</td>";
         echo "<td>" . $row["Redaut"] . "</td>";
-        echo "<td><a href='DeleteE.php?NCIN=" . $row["NCIN"] . "'>Supprimer</a></td>";
-        echo "<td><a href='EditE.php?NCIN=" . $row["NCIN"] . "'>Modifier</a></td>";
+        echo "<td><a href='DeleteE.php?NCIN=" . $row["NCIN"] . "' class='action-btn delete-btn'>Supprimer</a>";
+        echo "<a href='EditE.php?NCIN=" . $row["NCIN"] . "' class='action-btn edit-btn'>Modifier</a></td>";
         echo "</tr>";
     }
 

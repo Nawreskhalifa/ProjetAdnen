@@ -1,8 +1,42 @@
-<?php
-include '../Etudiant/config.php';// Assurez-vous que ce fichier pointe vers le bon emplacement de votre fichier de configuration.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Formulaire de recherche -->
+    <form method="post" action="IndexG.php">
+      
 
-// Sélectionnez tous les gouvernorats depuis la table
-$query = "SELECT * FROM gouvernorats";
+        <label for="searchAttribute">Chercher dans :</label>
+        <select name="searchAttribute" id="searchAttribute">
+            <option value="Gouvernorat">Gouvernorat</option>
+            <option value="codpostal">codpostal</option>
+            
+        </select>
+        <label for="searchTerm">Rechercher :</label>
+        <input type="text" name="searchTerm" id="searchTerm" required>
+        <input type="submit" value="Rechercher">
+    </form>
+</body>
+</html>
+<?php
+include '../Etudiant/config.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if form is submitted
+
+    $searchTerm = $_POST['searchTerm'];
+    $searchAttribute = $_POST['searchAttribute'];
+
+    // You may want to perform additional validation on $searchTerm
+
+    $query = "SELECT * FROM gouvernorats WHERE $searchAttribute LIKE '%$searchTerm%'";}
+    else{
+        $query = "SELECT * FROM gouvernorats";
+    }
+//$query = "SELECT * FROM gouvernorats";
 $result = $connection->query($query);
 
 ?>

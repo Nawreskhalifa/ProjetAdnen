@@ -5,13 +5,13 @@ $result = $connection->query($sql);
 if ($result) {
    $all_classes = $result;
 }
-// Récupérer les données des gouvernorats pour la liste déroulante
-$gouvernoratsQuery = "SELECT Gouvernorat, codpostal FROM gouvernorats";
-$resultGouvernorats = $connection->query($gouvernoratsQuery);
+// // Récupérer les données des gouvernorats pour la liste déroulante
+// $gouvernoratsQuery = "SELECT Gouvernorat, codpostal FROM gouvernorats";
+// $resultGouvernorats = $connection->query($gouvernoratsQuery);
 
-if (!$resultGouvernorats) {
-    die("Erreur lors de la récupération des gouvernorats: " . $connection->error);
-}
+// if (!$resultGouvernorats) {
+//     die("Erreur lors de la récupération des gouvernorats: " . $connection->error);
+// }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
     $nom = $_POST['Nom'];
@@ -122,8 +122,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label for="Ville">Ville:</label>
     <input type="text" name="Ville">
     <br>
-    <label for="CodePostal">Code Postal:</label>
-    <input type="text" name="CodePostal">
+    <label for="codpostal">Code Postal:</label>
+<select name="codpostal">
+    <?php 
+        $sql_gouvernorats = "SELECT codpostal, codpostal FROM gouvernorats";
+        $result_gouvernorats = $connection->query($sql_gouvernorats);
+
+        if ($result_gouvernorats) {
+            while ($gouvernorat = mysqli_fetch_array($result_gouvernorats, MYSQLI_ASSOC)) {
+                echo "<option value='{$gouvernorat["codpostal"]}'>{$gouvernorat["codpostal"]}</option>";
+            }
+        }
+    ?>
+</select>
     <br>
     <label for="N_Tel">Numéro de Téléphone:</label>
     <input type="text" name="N_Tel">
@@ -146,19 +157,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label for="DatePremiereInscp">Date de Première Inscription:</label>
     <input type="datetime-local" name="DatePremiereInscp">
     <br>
-    <<label for="Gouvernorat">Gouvernorat:</label>
+    <label for="Gouvernorat">Gouvernorat:</label>
 <select name="Gouvernorat">
     <?php 
-        $gouvernoratsQuery = "SELECT Gouvernorat, codpostal FROM gouvernorats";
-        $resultGouvernorats = $connection->query($gouvernoratsQuery);
+        $sql_gouvernorats = "SELECT Gouvernorat FROM gouvernorats";
+        $result_gouvernorats = $connection->query($sql_gouvernorats);
 
-        while ($row = $resultGouvernorats->fetch_assoc()) {
-            echo "<option value='{$row["Gouvernorat"]}'>{$row["Gouvernorat"]} - {$row["codpostal"]}</option>";
+        if ($result_gouvernorats) {
+            while ($gouvernorat = mysqli_fetch_array($result_gouvernorats, MYSQLI_ASSOC)) {
+                echo "<option value='{$gouvernorat["Gouvernorat"]}'>{$gouvernorat["Gouvernorat"]}</option>";
+            }
         }
-
-        $resultGouvernorats->free_result();
     ?>
 </select>
+
     <br>
     <label for="MentionBac">Mention au Bac:</label>
     <input type="text" name="MentionBac">
@@ -184,14 +196,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label for="VilleArabe">Ville en Arabe:</label>
     <input type="text" name="VilleArabe">
     <br>
-    <label for="GouvernoratArabe">Gouvernorat en Arabe:</label>
-    <input type="text" name="GouvernoratArabe">
+    <br><?php
+   $gouvMapping = array(
+    'Ariana' => 'أريانة',
+    'Beja' => 'باجة',
+    'Ben Arous' => 'بن عروس',
+    'Bizerte' => 'بنزرت',
+    'Gabes' => 'قابس',
+    'Gafsa' => 'قفصة',
+    'Jendouba' => 'جندوبة',
+    'Kairouan' => 'القيروان',
+    'Kasserine' => 'القصرين',
+    'Kebili' => 'قبلي',
+    'Kef' => 'الكاف',
+    'Mahdia' => 'المهدية',
+    'Manouba' => 'منوبة',
+    'Medenine' => 'مدنين',
+    'Monastir' => 'المنستير',
+    'Nabeul' => 'نابل',
+    'Sfax' => 'صفاقس',
+    'Sidi Bouzid' => 'سيدي بوزيد',
+    'Siliana' => 'سليانة',
+    'Sousse' => 'سوسة',
+    'Tataouine' => 'تطاوين',
+    'Tozeur' => 'توزر',
+    'Tunis' => 'تونس',
+    'Zaghouan' => 'زغوان',
+);
+
+$sql_gouvernorats = "SELECT Gouvernorat, codpostal FROM gouvernorats";
+$result_gouvernorats = $connection->query($sql_gouvernorats);
+
+if ($result_gouvernorats) {
+    echo "<label for='GouvernoratArabe'>Gouvernorat en Arabe:</label>";
+    echo "<select name='GouvernoratArabe'>";
+    
+    while ($gouvernorat = mysqli_fetch_array($result_gouvernorats, MYSQLI_ASSOC)) {
+        $gouvArabe = isset($gouvMapping[$gouvernorat["Gouvernorat"]]) ? $gouvMapping[$gouvernorat["Gouvernorat"]] : 'N/A';
+        echo "<option value='{$gouvArabe}'>{$gouvArabe} - {$gouvernorat["codpostal"]}</option>";
+    }
+
+    echo "</select>";
+}
+?>
     <br>
     <label for="TypeBacAB">Type de Bac AB:</label>
     <input type="text" name="TypeBacAB">
     <br>
     <label for="Photo">Photo:</label>
-    <input type="text" name="Photo">
+    <input type="file" name="Photo"  accept="image/*">
     <br>
     <label for="Origine">Origine:</label>
     <input type="text" name="Origine">

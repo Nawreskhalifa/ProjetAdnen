@@ -1,26 +1,25 @@
 <?php
 include '../Etudiant/config.php';
 
-// Vérifier si le code de la matière est passé dans l'URL
-if (isset($_GET['Code_Matiere'])) {
-    $codeMatiere = $_GET['Code_Matiere'];
+// Check if the code of the matière is passed in the URL
+if (isset($_GET['CodeMatiere'])) {
+    $codeMatiere = $_GET['CodeMatiere'];
 
-    // Récupérer les données de la matière à éditer
+    // Fetch the matière data for editing
     $query = "SELECT * FROM matieres WHERE `Code Matière` = '$codeMatiere'";
     $result = $connection->query($query);
 
     if ($result) {
         $matiere = $result->fetch_assoc();
     } else {
-        echo "Erreur lors de la récupération des données de la matière : " . $connection->error;
+        echo "Error retrieving matière data: " . $connection->error;
         exit;
     }
 } else {
-    echo "Code de la matière non spécifié.";
+    echo "Matière code not specified.";
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

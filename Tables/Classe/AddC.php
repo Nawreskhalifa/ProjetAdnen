@@ -47,7 +47,7 @@ if ($result_options) {
 <select name="CodDep">
     <?php 
         foreach ($all_departements as $Departement) {
-            echo "<option value='{$Departement["CodeDep"]}'>{$Departement["CodeDep"]}</option>";
+            echo "<option value='{$Departement["Departement"]}'>{$Departement["Departement"]}</option>";
         }
     ?>
 </select><br>

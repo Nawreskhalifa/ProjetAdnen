@@ -1,12 +1,37 @@
 <?php
 include '../Etudiant/config.php'; // Include your database connection file
 
-// Fetch grades from the database
+// Initialize variables
+$searchAttribute = isset($_POST['searchAttribute']) ? $_POST['searchAttribute'] : '';
+$searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
+
+// Fetch grades from the database based on search criteria
 $query = "SELECT * FROM Grades";
+
+// Check if search criteria is provided
+if (!empty($searchTerm) && !empty($searchAttribute)) {
+    $query .= " WHERE $searchAttribute LIKE '%$searchTerm%'";
+}
+
 $result = mysqli_query($connection, $query);
 
 // Check if there are any results
-if(mysqli_num_rows($result) > 0) {
+if (mysqli_num_rows($result) > 0) {
+    echo '<form method="post" action="">
+            <label for="searchAttribute">Search by:</label>
+            <select name="searchAttribute">
+                <option value="Grade">Grade</option>
+                <option value="ChargeTP">ChargeTP</option>
+                <option value="ChargeC">ChargeC</option>
+                <option value="ChargeTD">ChargeTD</option>
+                <option value="GradeArab">GradeArab</option>
+                <option value="ChargeCI">ChargeCI</option>
+                <option value="ChargeTotal">ChargeTotal</option>
+            </select>
+            <input type="text" name="searchTerm" placeholder="Search term">
+            <input type="submit" value="Search">
+        </form>';
+
     echo '<table class="table table-striped" border="1">
             <thead>
                 <tr>
@@ -23,7 +48,7 @@ if(mysqli_num_rows($result) > 0) {
             <tbody>';
 
     // Output data from each row
-    while($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
         echo '<tr>
                 <td>'.$row['Grade'].'</td>
                 <td>'.$row['ChargeTP'].'</td>
@@ -33,9 +58,9 @@ if(mysqli_num_rows($result) > 0) {
                 <td>'.$row['ChargeCI'].'</td>
                 <td>'.$row['ChargeTotal'].'</td>
                 <td>
-                <a href="EditG.php?grade='.$row['Grade'].'" class="btn btn-primary btn-sm">Modifier</a>
-                <a href="DeleteG.php?grade='.$row['Grade'].'" class="btn btn-danger btn-sm">Supprimer</a>
-            </td>
+                    <a href="EditG.php?grade='.$row['Grade'].'" class="btn btn-primary btn-sm">Modifier</a>
+                    <a href="DeleteG.php?grade='.$row['Grade'].'" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
             </tr>';
     }
 

@@ -24,8 +24,8 @@ if (isset($_GET['NCIN'])) {
 
             <body>
             <div class="form">
-            <a href="IndexE.php" class="back_btn"><img src="images/back.png"> Retour</a>
-            <h2>Modifier Gouvernorat</h2>
+            <a href="IndexE.php" class="back_btn"> Retour</a>
+      
             <p class="erreur_message">
                 <?php
                 if (!empty($message)) {
@@ -34,17 +34,19 @@ if (isset($_GET['NCIN'])) {
                 ?>
             </p>
                 <h2>Modifier Étudiant</h2>
-                <form method="post" action="update.php">
+<form method="post" action="update.php" enctype="multipart/form-data">
+        <a href="IndexE.php" class="back_btn"> Retour</a>
+
                     <label for="Nom">Nom:</label>
                     <input type="text" name="Nom" value="<?php echo $row['Nom']; ?>" required><br>
 
                     <label for="DateNais">Date de Naissance:</label>
                     <input type='date' name='DateNais' value='<?php echo date('Y-m-d', strtotime($row["DateNais"])); ?>' required><br>
                     <label for="NCIN">NCIN:</label>
-                    <input type="text" name="NCIN" value="<?php echo $row['NCIN']; ?>" required><br>
+    <input type="text" name="NCIN" value="<?php echo $row['NCIN']; ?>" required><br>
 
-                    <label for="NCE">NCE:</label>
-                    <input type="text" name="NCE" value="<?php echo $row['NCE']; ?>" required><br>
+    <label for="NCE">NCE:</label>
+    <input type="text" name="NCE" value="<?php echo $row['NCE']; ?>" required><br>
 
                     <label for="TypBac">Type du Bac:</label>
                     <input type="text" name="TypBac" value="<?php echo $row['TypBac']; ?>" required><br>
@@ -64,25 +66,41 @@ if (isset($_GET['NCIN'])) {
 
                     <label for="Ville">Ville:</label>
                     <input type="text" name="Ville" value="<?php echo $row['Ville']; ?>" required><br>
+<label for="CodPostal">Code Postal:</label>
+<select name="CodPostal" required>
+    <?php 
+        $sql_codpostals = "SELECT DISTINCT codpostal FROM gouvernorats";
+        $result_codpostals = $connection->query($sql_codpostals);
 
-                    <label for="CodePostal">Code Postal:</label>
-                    <input type="text" name="CodePostal" value="<?php echo $row['CodePostal']; ?>" required><br>
+        if ($result_codpostals) {
+            while ($codpostal = mysqli_fetch_array($result_codpostals, MYSQLI_ASSOC)) {
+                $selected = ($codpostal["codpostal"] == $row["codpostal"]) ? 'selected' : '';
+                echo "<option value='{$codpostal["codpostal"]}' $selected>{$codpostal["codpostal"]}</option>";
+            }
+        }
+    ?>
+</select><br>
+
+
 
                     <label for="N_Tel">N°Tél:</label>
                     <input type="text" name="N_Tel" value="<?php echo $row['N_Tel']; ?>" required><br>
 
-                    <label for="CodClasse">Code de Classe:</label>
-                        <select name="CodClasse" required>
-                            <?php
-                            $queryClasses = "SELECT CodClasse, CodClasse FROM Classe";
-                            $resultClasses = $connection->query($queryClasses);
+                <label for="CodClasse">Code de Classe:</label>
+                    <select name="CodClasse" required>
+                        <?php 
+                            $sql_classes = "SELECT CodClasse, CodClasse FROM Classe";
+                            $result_classes = $connection->query($sql_classes);
 
-                            while ($classe = $resultClasses->fetch_assoc()) {
-                                $selected = ($row['CodClasse'] == $classe['CodClasse']) ? 'selected' : '';
-                                echo "<option value='{$classe["CodClasse"]}' $selected>{$classe["CodClasse"]}</option>";
+                            if ($result_classes) {
+                                while ($class = mysqli_fetch_array($result_classes, MYSQLI_ASSOC)) {
+                                    $selected = ($class["CodClasse"] == $row["CodClasse"]) ? 'selected' : '';
+                                    echo "<option value='{$class["CodClasse"]}' $selected>{$class["CodClasse"]}</option>";
+                                }
                             }
-                            ?>
-                        </select>
+                        ?>
+                    </select><br>
+
                     <label for="DecisionConseil">Décision du Conseil:</label>
                     <input type="text" name="DecisionConseil" value="<?php echo $row['DecisionConseil']; ?>" required><br>
 
@@ -101,17 +119,20 @@ if (isset($_GET['NCIN'])) {
                     <label for="DatePremiereInscp">Première Inscription:</label>
                     <input type="text" name="DatePremiereInscp" value="<?php echo $row['DatePremiereInscp']; ?>" required><br>
 
-                    <select name="Gouvernorat" required>
-                            <?php
-                            $queryGouvernorats = "SELECT Gouvernorat, codpostal FROM gouvernorats";
-                            $resultGouvernorats = $connection->query($queryGouvernorats);
+                <label for="Gouvernorat">Gouvernorat:</label>
+                        <select name="Gouvernorat" required>
+                            <?php 
+                                $sql_gouvernorats = "SELECT Gouvernorat, codpostal FROM gouvernorats";
+                                $result_gouvernorats = $connection->query($sql_gouvernorats);
 
-                            while ($gouvernorat = $resultGouvernorats->fetch_assoc()) {
-                                $selected = ($row['Gouvernorat'] == $gouvernorat['Gouvernorat']) ? 'selected' : '';
-                                echo "<option value='{$gouvernorat["Gouvernorat"]}' $selected>{$gouvernorat["Gouvernorat"]} - {$gouvernorat["codpostal"]}</option>";
-                            }
+                                if ($result_gouvernorats) {
+                                    while ($gouvernorat = mysqli_fetch_array($result_gouvernorats, MYSQLI_ASSOC)) {
+                                        $selected = ($gouvernorat["Gouvernorat"] == $row["Gouvernorat"]) ? 'selected' : '';
+                                        echo "<option value='{$gouvernorat["Gouvernorat"]}' $selected> {$gouvernorat["Gouvernorat"]}</option>";
+                                    }
+                                }
                             ?>
-                        </select>
+                        </select><br>
                     <label for="MentionBac">Mention du Bac:</label>
                     <input type="text" name="MentionBac" value="<?php echo $row['MentionBac']; ?>" required><br>
 
@@ -136,8 +157,50 @@ if (isset($_GET['NCIN'])) {
                     <label for="VilleArabe">Ville Arabe:</label>
                     <input type="text" name="VilleArabe" value="<?php echo $row['VilleArabe']; ?>" required><br>
 
-                    <label for="GouvernoratArabe">Gouvernorat Arabe:</label>
-                    <input type="text" name="GouvernoratArabe" value="<?php echo $row['GouvernoratArabe']; ?>" required><br>
+                    <?php
+                        $gouvMappingArabe = array(
+                        'Ariana' => 'أريانة',
+                        'Beja' => 'باجة',
+                        'Ben Arous' => 'بن عروس',
+                        'Bizerte' => 'بنزرت',
+                        'Gabes' => 'قابس',
+                        'Gafsa' => 'قفصة',
+                        'Jendouba' => 'جندوبة',
+                        'Kairouan' => 'القيروان',
+                        'Kasserine' => 'القصرين',
+                        'Kebili' => 'قبلي',
+                        'Kef' => 'الكاف',
+                        'Mahdia' => 'المهدية',
+                        'Manouba' => 'منوبة',
+                        'Medenine' => 'مدنين',
+                        'Monastir' => 'المنستير',
+                        'Nabeul' => 'نابل',
+                        'Sfax' => 'صفاقس',
+                        'Sidi Bouzid' => 'سيدي بوزيد',
+                        'Siliana' => 'سليانة',
+                        'Sousse' => 'سوسة',
+                        'Tataouine' => 'تطاوين',
+                        'Tozeur' => 'توزر',
+                        'Tunis' => 'تونس',
+                        'Zaghouan' => 'زغوان',
+                        );
+                        ?>
+
+                        <label for="GouvernoratArabe">Gouvernorat Arabe:</label>
+                        <select name="GouvernoratArabe" required>
+                            <?php 
+                                $sql_gouvernorats = "SELECT Gouvernorat, codpostal FROM gouvernorats";
+                                $result_gouvernorats = $connection->query($sql_gouvernorats);
+
+                                if ($result_gouvernorats) {
+                                    while ($gouvernorat = mysqli_fetch_array($result_gouvernorats, MYSQLI_ASSOC)) {
+                                        $gouvArabe = isset($gouvMappingArabe[$gouvernorat["Gouvernorat"]]) ? $gouvMappingArabe[$gouvernorat["Gouvernorat"]] : 'N/A';
+                                        $selected = ($gouvArabe == $row["GouvernoratArabe"]) ? 'selected' : '';
+                                        echo "<option value='{$gouvArabe}' $selected>{$gouvArabe}</option>";
+                                    }
+                                }
+                            ?>
+                        </select><br>
 
                     <label for="TypeBacAB">Type de Bac (Arabe):</label><label for="TypeBacAB">Type de Bac (Arabe):</label>
                     <input type="text" name="TypeBacAB" value="<?php echo $row['TypeBacAB']; ?>" required><br>
@@ -147,6 +210,9 @@ if (isset($_GET['NCIN'])) {
 
                     <label for="SituationDpart">Situation de Départ:</label>
                     <input type="text" name="SituationDpart" value="<?php echo $row['SituationDpart']; ?>" required><br>
+                            <label for="SituationDpart">photo:</label>
+                    <img src='./photos/<?php echo $row["Photo"]; ?>' alt='Current Photo' width='100' height='100'>
+                    <input type="file" name="Photo"><br>
 
                     <label for="NBAC">NBAC:</label>
                     <input type="text" name="NBAC" value="<?php echo $row['NBAC']; ?>" required><br>
@@ -166,7 +232,7 @@ if (isset($_GET['NCIN'])) {
         echo "Aucun étudiant trouvé avec ce NCIN.";
     }
 } else {
-    echo "Erreur dans la requête : " . $conn->error;
+    echo "Erreur dans la requête : " . $connection->error;;
 }
 }
 ?>

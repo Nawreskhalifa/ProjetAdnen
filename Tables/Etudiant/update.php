@@ -1,92 +1,91 @@
 <?php
 include 'config.php';
 
-$pdo = new PDO("mysql:host=localhost;dbname=scolarite", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-if (isset($_POST['update_etudiant'])) {
     $NCIN = $_POST['NCIN'];
+    $Nom = $_POST['Nom'];
+    $DateNais = $_POST['DateNais'];
+    $NCE = $_POST['NCE'];
+    $TypBac = $_POST['TypBac'];
+    $Prénom = $_POST['Prénom'];
+    $Sexe = $_POST['Sexe'];
+    $LieuNais = $_POST['LieuNais'];
+    $Adresse = $_POST['Adresse'];
+    $Ville = $_POST['Ville'];
+    $CodPostal=$_POST['CodPostal'];  
+    $N_Tel = $_POST['N_Tel'];
+    $CodClasse = $_POST['CodClasse'];
+    $DecisionConseil = $_POST['DecisionConseil'];
+    $AnneeUniversitaire = $_POST['AnneeUniversitaire'];
+    $Semestre = $_POST['Semestre'];
+    $Dispenser = $_POST['Dispenser'];
+    $AnneesOpt = $_POST['AnneesOpt'];
+    $DatePremiereInscp = $_POST['DatePremiereInscp'];
+    $Gouvernorat = $_POST['Gouvernorat'];
+    $MentionBac = $_POST['MentionBac'];
+    $Nationalite = $_POST['Nationalite'];
+    $CodeCNSS = $_POST['CodeCNSS'];
+    $NomArabe = $_POST['NomArabe'];
+    $PrenomArabe = $_POST['PrenomArabe'];
+    $LieuNaisArabe = $_POST['LieuNaisArabe'];
+    $AdresseArabe = $_POST['AdresseArabe'];
+    $VilleArabe = $_POST['VilleArabe'];
+    $GouvernoratArabe = $_POST['GouvernoratArabe'];
+    $TypeBacAB = $_POST['TypeBacAB'];
+    $Origine = $_POST['Origine'];
+    $SituationDpart = $_POST['SituationDpart'];
+    $NBAC = $_POST['NBAC'];
+    $Redaut = $_POST['Redaut'];
+$Photo = htmlspecialchars(basename($_FILES["Photo"]["name"]));
+$id = $_POST["NCIN"];
 
-    $query = "UPDATE etudiant SET
-    Nom = :Nom,
-    DateNais = :DateNais,
-    NCE = :NCE,
-    TypBac = :TypBac,
-    `Prénom` = :Prenom,  -- Assurez-vous d'avoir accent grave autour de Prénom
-    Sexe = :Sexe,
-    LieuNais = :LieuNais,
-    Adresse = :Adresse,
-    Ville = :Ville,
-    CodePostal = :CodePostal,
-    N_Tel = :N_Tel,
-    CodClasse = :CodClasse,
-    DecisionConseil = :DecisionConseil,
-    AnneeUniversitaire = :AnneeUniversitaire,
-    Semestre = :Semestre,
-    Dispenser = :Dispenser,
-    AnneesOpt = :AnneesOpt,
-    DatePremiereInscp = :DatePremiereInscp,
-    Gouvernorat = :Gouvernorat,
-    MentionBac = :MentionBac,
-    Nationalite = :Nationalite,
-    CodeCNSS = :CodeCNSS,
-    NomArabe = :NomArabe,
-    PrenomArabe = :PrenomArabe,
-    LieuNaisArabe = :LieuNaisArabe,
-    AdresseArabe = :AdresseArabe,
-    VilleArabe = :VilleArabe,
-    GouvernoratArabe = :GouvernoratArabe,
-    TypeBacAB = :TypeBacAB,
-    Origine = :Origine,
-    SituationDpart = :SituationDpart,
-    NBAC = :NBAC,
-    Redaut = :Redaut
-    WHERE NCIN = :NCIN";
+$updateQuery = "UPDATE etudiant SET 
+    `Nom` = '$Nom',
+    `NCIN` = '$NCIN',
+    `DateNais` = '$DateNais',
+    NCE = '$NCE',
+    TypBac = '$TypBac',
+    Prénom = '$Prénom',
+    Sexe = '$Sexe',
+    LieuNais = '$LieuNais',
+    Adresse = '$Adresse',
+    Ville = '$Ville',
+CodePostal = '$CodPostal',
+    N_Tel = '$N_Tel',
+    CodClasse = '$CodClasse',
+    DecisionConseil = '$DecisionConseil',
+    AnneeUniversitaire = '$AnneeUniversitaire',
+    Semestre = '$Semestre',
+    Dispenser = '$Dispenser',
+    AnneesOpt = '$AnneesOpt',
+    DatePremiereInscp = '$DatePremiereInscp',
+    Gouvernorat = '$Gouvernorat',
+    MentionBac = '$MentionBac',
+    Nationalite = '$Nationalite',
+    CodeCNSS = '$CodeCNSS',
+    NomArabe = '$NomArabe',
+    PrenomArabe = '$PrenomArabe',
+    LieuNaisArabe = '$LieuNaisArabe',
+    AdresseArabe = '$AdresseArabe',
+    VilleArabe = '$VilleArabe',
+    GouvernoratArabe = '$GouvernoratArabe',
+    TypeBacAB = '$TypeBacAB',
+    Origine = '$Origine',
+    SituationDpart = '$SituationDpart',
+    NBAC = '$NBAC',
+    Redaut = '$Redaut',
+    Photo = '$Photo'
+    WHERE NCIN = '$id'";
 
-    try {
-        $stmt = $pdo->prepare($query);
 
-        $stmt->bindValue(':NCIN', $NCIN);
-        $stmt->bindValue(':Nom', $_POST['Nom']);
-        $stmt->bindValue(':DateNais', $_POST['DateNais']);
-        $stmt->bindValue(':NCE', $_POST['NCE']);
-        $stmt->bindValue(':TypBac', $_POST['TypBac']);
-        $stmt->bindValue(':Prenom', $_POST['Prénom']);  
-        $stmt->bindValue(':Sexe', $_POST['Sexe']);
-        $stmt->bindValue(':LieuNais', $_POST['LieuNais']);
-        $stmt->bindValue(':Adresse', $_POST['Adresse']);
-        $stmt->bindValue(':Ville', $_POST['Ville']);
-        $stmt->bindValue(':CodePostal', $_POST['CodePostal']);
-        $stmt->bindValue(':N_Tel', $_POST['N_Tel']);
-        $stmt->bindValue(':CodClasse', $_POST['CodClasse']);
-        $stmt->bindValue(':DecisionConseil', $_POST['DecisionConseil']);
-        $stmt->bindValue(':AnneeUniversitaire', $_POST['AnneeUniversitaire']);
-        $stmt->bindValue(':Semestre', $_POST['Semestre']);
-        $stmt->bindValue(':Dispenser', $_POST['Dispenser']);
-        $stmt->bindValue(':AnneesOpt', $_POST['AnneesOpt']);
-        $stmt->bindValue(':DatePremiereInscp', $_POST['DatePremiereInscp']);
-        $stmt->bindValue(':Gouvernorat', $_POST['Gouvernorat']);
-        $stmt->bindValue(':MentionBac', $_POST['MentionBac']);
-        $stmt->bindValue(':Nationalite', $_POST['Nationalite']);
-        $stmt->bindValue(':CodeCNSS', $_POST['CodeCNSS']);
-        $stmt->bindValue(':NomArabe', $_POST['NomArabe']);
-        $stmt->bindValue(':PrenomArabe', $_POST['PrenomArabe']);
-        $stmt->bindValue(':LieuNaisArabe', $_POST['LieuNaisArabe']);
-        $stmt->bindValue(':AdresseArabe', $_POST['AdresseArabe']);
-        $stmt->bindValue(':VilleArabe', $_POST['VilleArabe']);
-        $stmt->bindValue(':GouvernoratArabe', $_POST['GouvernoratArabe']);
-        $stmt->bindValue(':TypeBacAB', $_POST['TypeBacAB']);
-        $stmt->bindValue(':Origine', $_POST['Origine']);
-        $stmt->bindValue(':SituationDpart', $_POST['SituationDpart']);
-        $stmt->bindValue(':NBAC', $_POST['NBAC']);
-        $stmt->bindValue(':Redaut', $_POST['Redaut']);
 
-        $stmt->execute();
-        echo "Les informations de l'étudiant ont été mises à jour avec succès.";
-    } catch (PDOException $e) {
-        echo "Erreur lors de la mise à jour des informations de l'étudiant : " . $e->getMessage();
+    if ($connection->query($updateQuery) === TRUE) {
+        echo "Record updated successfully";
+    } else {
+        echo "Error updating record: " . $connection->error;
     }
-} else {
-    echo "Aucune donnée à mettre à jour.";
-}
+
+    // Redirect to the index page or any other page after the update
+    header("Location: IndexE.php");
+    exit();
+
 ?>
