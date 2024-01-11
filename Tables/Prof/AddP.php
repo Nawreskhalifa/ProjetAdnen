@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $etbOrigine = isset($_POST['etbOrigine']) ? $_POST['etbOrigine'] : '';
     $typeEnsg = isset($_POST['typeEnsg']) ? $_POST['typeEnsg'] : '';
     $controlAcces = isset($_POST['controlAcces']) ? $_POST['controlAcces'] : '';
-    
+     
     // Prepare and execute the SQL query
     $sql = "INSERT INTO prof (
     MatProf, Nom, Prénom, CIN_ou_Passeport, Identifiant_CNRPS, 
@@ -233,7 +233,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         <label for="prenomArabe">Prénom en Arabe :</label>
         <input type="text" name="prenomArabe"><br>
-    
+        <label for="adresseArabe">Adresse en Arabe:</label>
+    <input type="text" id="adresseArabe" name="adresseArabe" />
+
+    <label for="villeArabe">Ville en Arabe:</label>
+    <input type="text" id="villeArabe" name="villeArabe"/>
+
+    <label for="disponible">Disponible:</label>
+    <input type="text" id="disponible" name="disponible" />
+
+    <label for="sousSP">Sous SP:</label>
+    <input type="text" id="sousSP" name="sousSP"  />
+
+    <label for="etbOrigine">Établissement d'Origine:</label>
+    <input type="text" id="etbOrigine" name="etbOrigine" />
+
+    <label for="controlAcces">Contrôle d'Accès:</label>
+    <input type="text" id="controlAcces" name="controlAcces"/>
+
+    <label for="lieuNaisArabe">Lieu de Naissance en Arabe:</label>
+    <input type="text" id="lieuNaisArabe" name="lieuNaisArabe"  />
+
     
         <label for="typeEnsg">Type d'Enseignement :</label>
         <input type="text" name="typeEnsg"><br>

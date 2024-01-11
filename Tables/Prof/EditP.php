@@ -24,8 +24,6 @@ if (isset($_GET['MatProf'])) {
         <body>
             <h1>Modifier un Professeur</h1>
             <form action="UpdateP.php" method="post">
-                <!-- Ajoutez les champs du formulaire avec les valeurs existantes -->
-                <!-- Utilisez $row['Nom'], $row['Prenom'], etc. pour remplir les champs -->
                 <label for="MatProf">Matricule Prof :</label>
                 <input type="text" name="MatProf" value="<?php echo $row['MatProf']; ?>" readonly><br>
 
@@ -43,6 +41,70 @@ if (isset($_GET['MatProf'])) {
 
 <label for="dateNaissance">Date de naissance :</label>
 <input type="date" name="dateNaissance" value="<?php echo $row['Date_de_naissance']; ?>"><br>
+
+<label for="nationalite">Nationalité :</label>
+<input type="text" name="nationalite" value="<?php echo $row['Nationalité']; ?>"><br>
+
+<label for="sexe">Sexe (M/F) :</label>
+<input type="text" name="sexe" value="<?php echo $row['Sexe']; ?>"><br>
+
+<label for="dateEntAdm">Date d'entrée administrative :</label>
+<input type="date" name="dateEntAdm" value="<?php echo $row['Date_Ent_Adm']; ?>"><br>
+
+<label for="dateEntEtbs">Date d'entrée à l'établissement :</label>
+<input type="date" name="dateEntEtbs" value="<?php echo $row['Date_Ent_Etbs']; ?>"><br>
+
+<label for="diplome">Diplôme :</label>
+<input type="text" name="diplome" value="<?php echo $row['Diplôme']; ?>"><br>
+
+<label for="adresse">Adresse :</label>
+<input type="text" name="adresse" value="<?php echo $row['Adresse']; ?>"><br>
+
+<label for="ville">Ville :</label>
+<input type="text" name="ville" value="<?php echo $row['Ville']; ?>"><br>
+
+<label for="codePostal">Code postal :</label>
+<input type="text" name="codePostal" value="<?php echo $row['Code_postal']; ?>"><br>
+
+<label for="telephone">Téléphone :</label>
+<input type="text" name="telephone" value="<?php echo $row['N_Téléphone']; ?>"><br>
+<br>
+
+<label for="dateNominationGrade">Date de nomination dans le grade :</label>
+<input type="date" name="dateNominationGrade" value="<?php echo $row['Date_de_nomination_dans_le_grade']; ?>"><br>
+
+<label for="dateTitularisation">Date de titularisation :</label>
+<input type="date" name="dateTitularisation" value="<?php echo $row['Date_de_titularisation']; ?>"><br>
+
+<label for="nPoste">Numéro de poste :</label>
+<input type="text" name="nPoste" value="<?php echo $row['N_Poste']; ?>"><br>
+
+<br>
+
+<label for="situation">Situation :</label>
+<input type="text" name="situation" value="<?php echo $row['Situation']; ?>"><br>
+
+<label for="specialite">Spécialité :</label>
+<input type="text" name="specialite" value="<?php echo $row['Spécialité']; ?>"><br>
+
+<label for="nCompte">Numéro de Compte :</label>
+<input type="text" name="nCompte" value="<?php echo $row['N_de_Compte']; ?>"><br>
+
+<label for="banque">Banque :</label>
+<input type="text" name="banque" value="<?php echo $row['Banque']; ?>"><br>
+
+<label for="agence">Agence :</label>
+<input type="text" name="agence" value="<?php echo $row['Agence']; ?>"><br>
+
+<label for="adrVacances">Adresse pendant les vacances :</label>
+<input type="text" name="adrVacances" value="<?php echo $row['Adr_pendant_les_vacances']; ?>"><br>
+
+<label for="telVacances">Téléphone pendant les vacances :</label>
+<input type="text" name="telVacances" value="<?php echo $row['Tél_pendant_les_vacances']; ?>"><br>
+
+<label for="lieuNaissance">Lieu de naissance :</label>
+<input type="text" name="lieuNaissance" value="<?php echo $row['Lieu_de_naissance']; ?>"><br>
+
 
 <label for="debutContrat">Début du Contrat :</label>
 <input type="date" name="debutContrat" value="<?php echo $row['Début_du_Contrat']; ?>"><br>
@@ -97,6 +159,7 @@ if (isset($_GET['MatProf'])) {
 
 <label for="controlAcces">Contrôle d'accès :</label>
 <input type="text" name="controlAcces" value="<?php echo $row['ControlAcces']; ?>"><br>
+
 <label for="grade">Grade :</label>
 <select name="grade">
     <?php
@@ -106,8 +169,8 @@ if (isset($_GET['MatProf'])) {
 
     // Afficher chaque grade dans le champ de sélection
     while ($grade = $gradesResult->fetch_assoc()) {
-        $selected = ($grade['IdGrade'] == $row['Grade']) ? 'selected' : '';
-        echo "<option value='{$grade['IdGrade']}' $selected>{$grade['NomGrade']}</option>";
+        $selected = ($grade['Grade'] == $row['Grade']) ? 'selected' : '';
+        echo "<option value='{$grade['Grade']}' $selected>{$grade['Grade']}</option>";
     }
     ?>
 </select><br>
